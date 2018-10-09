@@ -1,0 +1,72 @@
+
+<?php
+	$id = Mage::registry('current_product')->getId();
+	$everyStore = Mage::getModel('catalog/product')->load($id)->getStoreIds();
+	$defval = Mage::getModel('catalog/product')->setStoreId(0)->load($id)->getStatus();
+
+	if ($defval == 1) {
+		$defvalword = "Enabled";
+		$color = "green";
+	}
+	if ($defval == 2) {
+		$defvalword = "Disabled";
+		$color = "red";
+	}
+
+?>
+
+<h1>Product Status</h1>
+<h4>Current default value: <span style="color: <?php echo $color;?>;"><?php echo $defvalword; ?></span></h4>
+<h3>Use Default Value for: </h3>
+<h4 class="currentvalhead">Current store values:</h4>	
+
+<?php
+			
+	foreach ($everyStore as $eachStore) { 
+	$storeName = Mage::app()->getStore($eachStore)->getName(); 
+	$storeCode = Mage::app()->getStore($eachStore)->getCode();
+	$storeID = Mage::app()->getStore($eachStore)->getId();
+	$actualstatusvalue = Mage::getModel('catalog/product')->setStoreId($eachStore)->load($id)->getData('status');
+	if ($actualstatusvalue == 1) {
+		$word = "Enabled";
+		$color1 = "green";
+	}
+	if ($actualstatusvalue == 2) {
+		$word = "Disabled";
+		$color1 = "red";
+	}
+
+
+	?>
+		
+		<div style="padding-top: 10px;" class="input-field">
+		 <label for="<?php echo $storeCode."status" ?>"><?php echo $storeName ?></label>
+		 <input type="checkbox" class="input-text jurgisinput"  name="<?php echo $storeCode."status" ?>" id="<?php echo $storeCode."status" ?>" />
+		 <p style="color: <?php echo $color1;?>" class="input-text currentval"><?php echo $word; ?></p>
+		</div>
+		<hr width="500px">
+		
+<?php }?>
+
+<div style="padding-top: 20px;" class="input-field">
+		 <label for="yesnostatus" ?>Save values</label>
+		 <input type="checkbox" class="input-text"  name="yesnostatus" id="yesnostatus" />
+</div>
+
+<style type="text/css">
+  		.jurgisinput{
+  			position: absolute;
+  			left: 500px;
+  		}
+  		.currentvalhead{
+  			position: relative;
+  			left: 300px;
+  		}
+  		.currentval{
+  			position: absolute;
+  			display: inline-block;
+
+  			left: 600px;
+  		}
+</style>
+

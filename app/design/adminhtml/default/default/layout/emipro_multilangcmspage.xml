@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<layout>
+	<adminhtml_cms_page_index>
+	        <reference name="content">
+    <block type="adminhtml/store_switcher" name="store_switcher" template="store/switcher.phtml" before="-"/>
+        </reference>
+	</adminhtml_cms_page_index>
+    <adminhtml_cms_page_edit>
+		<reference name="left">
+        <block before="-" type="adminhtml/store_switcher" name="store_switcher" template="store/switcher.phtml"/>
+    </reference>
+    </adminhtml_cms_page_edit>    
+    <adminhtml_cms_page_new>
+		<remove name="store_switcher"></remove>
+    </adminhtml_cms_page_new>
+
+
+</layout>
+ 
+ 

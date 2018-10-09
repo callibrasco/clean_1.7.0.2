@@ -1,0 +1,107 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_Helpdesk3
+ * @version    3.3.11
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?>
+
+<?php /** @var AW_Helpdesk3_Block_Adminhtml_Ticket_Edit_Form_Thread_Renderer_Message $this */?>
+
+<style>
+
+    .column {
+        float: left;
+        width: 45%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .awhdu3-ticket-edit-thread-tabs-content-item-row p {
+        white-space: pre-wrap !important;
+        word-break: break-all
+    }
+
+    .awhdu3-ticket-edit-thread-tabs-content-item-row .row .column p {
+        font-size: 12px;
+    }
+
+    .row .column.translate {
+        margin-left: 20px;
+        border-left: 2px solid rgb(195, 211, 177);
+        padding: 0px 5px;
+    }
+
+</style>
+
+
+<div class="awhdu3-ticket-edit-thread-full-<?php echo $this->isAdminMessage()?'admin-message':'customer-message';?>">
+    <div>
+        <h4><?php echo $this->getEventInitiatorName();?></h4>
+        <span class="separator">|</span>
+        <?php echo $this->formatDate($this->getEvent()->getCreatedAt(), Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM, true);?>
+    </div>
+    <div class="row">
+        <div class="column">
+          <p><?php echo $this->getMessageText();?></p>
+        </div>
+        <div class="column translate">
+          <p><?php echo $this->getMessageText();?></p>
+          <div style="position: absolute; text-indent: 100%; white-space: nowrap; overflow: hidden;" class="translate_control" lang="en"></div>
+
+        </div>
+    </div>
+
+    <?php if ($this->getEvent()->getAttachmentCollection()->getSize()):?>
+    <div class="awhdu3-ticket-edit-thread-tabs-content-item-message-attachmentbox">
+        <span><?php echo $this->__('Attachments:');?></span>
+        <ul>
+        <?php foreach ($this->getEvent()->getAttachmentCollection() as $attachment):?>
+            <li>
+                <a href="<?php echo $this->getUrl('adminhtml/awhdu3_ticket/download', array('id' => $attachment->getId()));?>" target="_blank">
+                    <?php echo $attachment->getFileRealName();?>
+                </a>
+            </li>
+        <?php endforeach;?>
+        </ul>
+    </div>
+    <?php endif;?>
+</div>
+
+    <script>
+    function googleSectionalElementInit() {
+      new google.translate.SectionalElement({
+        sectionalNodeClassName: 'translate',
+        controlNodeClassName: 'translate_control',
+        background: '#f4fa58'
+      }, 'google_sectional_element');
+    }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
+
+
+

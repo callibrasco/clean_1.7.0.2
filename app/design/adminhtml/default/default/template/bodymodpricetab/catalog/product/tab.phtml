@@ -1,0 +1,131 @@
+
+<h1>Prices</h1>
+<?php
+	$id = Mage::registry('current_product')->getId();
+	$everyStore = Mage::getModel('catalog/product')->load($id)->getStoreIds();
+?>
+	<!-- Price fields -->
+
+	<div class="input-field">	
+ 		<label for="defaultval">Default value</label>
+ 		<input class="input-text jurgisinput1" value= "<?php echo Mage::getModel('catalog/product')->setStoreId(0)->load($id)->getPrice(); ?>" name="defaultval" id="defaultval" />
+	</div>
+	
+
+<?php
+	foreach ($everyStore as $eachStore) { 
+	$storeName = Mage::app()->getStore($eachStore)->getName(); 
+	$storeCode = Mage::app()->getStore($eachStore)->getCode();
+	$storeID = Mage::app()->getStore($eachStore)->getId();
+	$websiteID = Mage::app()->getStore($eachStore)->getWebsiteId(); 
+	$websiteName = Mage::app()->getWebsite($websiteID)->getName();
+	$FrontendName = Mage::app()->getStore($eachStore)->getFrontendName();
+	?>
+	
+		<div style="padding-top: 10px;" class="input-field">
+		 <label for="<?php echo $storeCode ?>"><?php echo $websiteName." - ".$FrontendName." - <strong>".$storeName."</strong>" ?></label>
+		 <input class="input-text jurgisinput1" value= "<?php echo Mage::getModel('catalog/product')->setStoreId($storeID)->load($id)->getPrice(); ?>" name="<?php echo $storeCode ?>" id="<?php echo $storeCode ?>" />
+		</div>
+<?php }?>
+	<br>
+	<br>
+	<div class="input-field">	
+		 <label id="bodymodsavetextprice" for="yesno">Save price values</label>
+		 <input class="input-text" type="checkbox" name="yesno">
+  	</div>
+
+	<!-- Special price fields -->
+
+	<h1 style="padding-top: 10px;">Special prices</h1>
+
+	<div class="input-field">	
+ 		<label for="defaultvalspecialprice">Default value special price</label>
+ 		<input class="input-text jurgisinput1" value= "<?php echo Mage::getModel('catalog/product')->setStoreId(0)->load($id)->getSpecialPrice(); ?>" name="defaultvalspecialprice" id="defaultvalspecialprice" />
+	</div>
+
+<?php 
+	foreach ($everyStore as $eachStore) { 
+	$storeName = Mage::app()->getStore($eachStore)->getName(); 
+	$storeCode = Mage::app()->getStore($eachStore)->getCode();
+	$storeID = Mage::app()->getStore($eachStore)->getId();
+	$websiteID = Mage::app()->getStore($eachStore)->getWebsiteId(); 
+	$websiteName = Mage::app()->getWebsite($websiteID)->getName();
+	$FrontendName = Mage::app()->getStore($eachStore)->getFrontendName();
+	?>
+	
+		<div style="padding-top: 10px;" class="input-field">	
+ 		<label for="<?php echo $storeCode."specialprice" ?>"><?php echo $websiteName." - ".$FrontendName." - <strong>".$storeName."</strong>" ?></label>
+ 		<input class="input-text jurgisinput1" value= "<?php echo Mage::getModel('catalog/product')->setStoreId($storeID)->load($id)->getSpecialPrice(); ?>" name="<?php echo $storeCode."specialprice" ?>" id="<?php echo $storeCode."specialprice" ?>" />
+		</div>
+<?php }?>
+
+	<!-- Date fields -->
+
+	<?php
+	$specialfromdate = Mage::getModel('catalog/product')->setStoreId(0)->load($id)->getSpecialFromDate();
+	$specialfromdate = explode(" ", $specialfromdate);
+	$specialtodate =  Mage::getModel('catalog/product')->setStoreId(0)->load($id)->getSpecialToDate();
+	$specialtodate = explode(" ", $specialtodate);
+	?>
+
+	<h1 style="padding-top: 10px;">Special price dates</h1>
+	
+	<div class="input-field">	
+ 		<label for="fromdate">From date</label>
+ 		<input class="input-text jurgisinput1" value= "<?php echo $specialfromdate[0]; ?>" name="fromdate" id="fromdate" />
+ 		<img class="input-text" title="Select date" id="_dob_trig2" class="v-middle" src="<?php echo $this->getSkinUrl('images/grid-cal.gif');?>">
+	</div>
+	<div style="padding-top: 10px;" class="input-field">	
+ 		<label for="todate">To date</label>
+ 		<input class="input-text jurgisinput1" value= "<?php echo $specialtodate[0]; ?>" name="todate" id="todate" />
+ 		<img class="input-text" title="Select date" id="_dob_trig" class="v-middle" src="<?php echo $this->getSkinUrl('images/grid-cal.gif');?>">
+	</div>
+	<br>
+	<br>
+	<div class="input-field">	
+		 <label id="bodymodsavetextspecialprice" for="yesnospecial">Save special price values</label>
+		 <input class="input-text" type="checkbox" name="yesnospecial">
+  	</div>
+	
+  	
+
+  	<style type="text/css">
+  		.jurgisinput1{
+  			position: absolute;
+  			left: 600px;
+  		}
+  		#_dob_trig, #_dob_trig2{
+  			position: absolute;
+  			left: 770px;
+  			margin-top: 3px;
+  		}
+  		#bodymodsavetextprice, #bodymodsavetextspecialprice{
+  			color: red;
+  			 font-weight: bold;
+  			 font-size: 16px;
+  		}
+  		
+  	</style>
+
+        
+
+  	<script type="text/javascript">
+//<![CDATA[
+ Calendar.setup({
+        inputField : 'todate',
+        ifFormat : '%Y-%m-%e',
+        button : '_dob_trig',
+        align : 'Bl',
+        singleClick : true
+    });
+  Calendar.setup({
+        inputField : 'fromdate',
+        ifFormat : '%Y-%m-%e',
+        button : '_dob_trig2',
+        align : 'Bl',
+        singleClick : true
+    });
+//]]>
+	
+</script>
+

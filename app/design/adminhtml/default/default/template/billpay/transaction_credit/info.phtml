@@ -1,0 +1,67 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @package    Billpay
+ * @author 	   Jan Wehrs <jan.wehrs@billpay.de>
+ * @copyright  Copyright (c) 2009 Billpay GmbH
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @var Billpay_Block_TransactionCredit_Info $this
+ */
+?>
+<img src="https://www.billpay.de/sites/default/files/LogoMid1.png" title="Billpay" alt="Billpay logo">
+<?php if($this->hasOrder()): ?>
+    <br/>
+    <?php if(count($this->getDues()) === 0): ?>
+        <?php echo $this->__('billpay_order_cancelled'); ?>
+    <?php else: ?>
+        <?php echo $this->__('Thank you for using BillPay Transaction Credit.') ?>
+
+        <?php /* tc che has billpay bank account */ ?>
+        <?php if ($this->getOrder()->getBillpayAccountNumber()): ?>
+            <?php echo $this->__('Please transfer the rates below to the following bank account before their date of payment.') ?><br/>
+            <br/>
+            <table cellspacing="0" cellpadding="0" autosize="1">
+                <tr>
+                    <th style="height: 8px;text-align: left;padding:0 2px;margin:0;"><?php echo $this->__('payee'); ?></th>
+                    <th style="height: 8px;text-align: left;padding:0 2px;margin:0;"><?php echo $this->__('IBAN') ?></th>
+                    <td style="height: 8px;padding:0 2px;margin:0;"><?php echo $this->getOrder()->getBillpayAccountNumber(); ?></td>
+                </tr>
+                <tr>
+                    <td rowspan="3" style="padding:0 2px;margin:0;vertical-align: top;">
+                        BillPay GmbH<br>
+                        Zweigniederlassung Schweiz (Regensdorf)<br>
+                        DE-10115 Berlin
+                    </td>
+                    <th style="height: 8px;text-align: left;padding:0 2px;margin:0;"><?php echo $this->__('BIC'); ?></th>
+                    <td style="height: 8px;padding:0 2px;margin:0;"><?php echo $this->getOrder()->getBillpayBankCode(); ?></td>
+                </tr>
+                <tr>
+                    <th style="height: 8px;text-align: left;padding:0 2px;margin:0;"><?php echo $this->__('bank name'); ?></th>
+                    <td style="height: 8px;padding:0 2px;margin:0;"><?php echo $this->getOrder()->getBillpayBankName(); ?></td>
+                </tr>
+                <tr>
+                    <th style="height: 8px;text-align: left;padding:0 2px;margin:0;"><?php echo $this->__('reference'); ?></th>
+                    <td style="height: 8px;padding:0 2px;margin:0;"><?php echo $this->getOrder()->getBillpayInvoiceReference(); ?></td>
+                </tr>
+            </table>
+            <br/>
+        <?php else: ?>
+            <?php echo $this->__('The rates will be fetched from the bank account set in the checkout.') ?><br/>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php else: ?>
+    <?php echo $this->__('billpay_rat');?>
+<?php endif; ?>

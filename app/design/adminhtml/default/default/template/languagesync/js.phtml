@@ -1,0 +1,74 @@
+<?php 
+$request = Mage::app()->getRequest();
+$store = $request->getParam('store', false);
+$section = $request->getParam('section', false);
+if ($store && $section == 'languagesync_section') : 
+?>
+<script type="text/javascript">
+var specialCharTargetStoreUpdate;
+
+function updateSpecialCharTargetStoreOptions(selectedTargetStores) 
+{
+    clearTimeout(specialCharTargetStoreUpdate);
+    if (selectedTargetStores.length) 
+    {
+        specialCharTargetStoreUpdate = setTimeout(function()
+        {
+            new Ajax.Request('<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/languagesync/index') ?>', 
+            {
+                method:'POST',
+                parameters: 
+                {
+                    'store': '<?php echo $store ?>',
+                    'target_stores': selectedTargetStores.join(',')
+                },
+                onSuccess: function(transport) 
+                {
+                    if (transport.responseText) 
+                    {
+                        var response = JSON.parse(transport.responseText);
+                        if (response.hasOwnProperty('update') && response.hasOwnProperty('html')) 
+                        {
+                            if (parseInt(response['update']) && '' != response['html']) 
+                            {
+                                $$('.special-character-target-stores').each(function(el, index)
+                                {
+                                    var currentStores = $(el).getValue();
+                                    $(el).update(response['html']);
+                                    
+                                    for (var i=0; i < $(el).options.length; i++)
+                                    {
+                                        var optionSelected = false;
+                                        for(var j = 0; j < currentStores.length; j++) 
+                                        {
+                                            if(parseInt(currentStores[j]) == parseInt($(el).options[i].value)) optionSelected = true;
+                                        }
+                                        
+                                        if (optionSelected) 
+                                        {
+                                            $(el).options[i].selected = true;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+        
+        }, 1000);
+    }
+}
+
+$(document).on('dom:loaded', function()
+{
+    if ($('languagesync_section_languagesync_group_languagesync_val')) 
+    {
+        $('languagesync_section_languagesync_group_languagesync_val').on('change', function()
+        {
+            updateSpecialCharTargetStoreOptions($(this).getValue());
+        });
+    }
+});
+</script>
+<?php endif; ?>

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_catalog_product_index>
+        <reference name="head">
+            <action method="addJs"><script>moogento/general/jquery.min.js</script></action>
+            <action method="addJs"><script>moogento/general/jquery-ui.min.js</script></action>
+            <action method="addJs"><script>moogento/general/jquery.ddslick.js</script></action>
+            <action method="addJs"><script>moogento/general/spinner.js</script></action>
+            <action method="addJs"><script>moogento/stockeasy/adminhtml/productGrid.js</script></action>
+            <action method="addCss"><name>moogento/stockeasy/grid.css</name></action>
+            <action method="addCss"><script>moogento/general/spinner/spinner.css</script></action>
+        </reference>
+    </adminhtml_catalog_product_index>
+
+    <adminhtml_dashboard_index>
+        <reference name="dashboard">
+            <action method="setTemplate"><template>moogento/stockeasy/dashboard/index.phtml</template></action>
+            <block type="moogento_stockeasy/adminhtml_dashboard_lowstock" name="lowstock_warnings" />
+        </reference>
+    </adminhtml_dashboard_index>
+
+    <adminhtml_stockeasy_catalog_product_stock_import>
+        <remove name="root"/>
+        <block type="adminhtml/page" name="convert_root" output="toHtml" template="page.phtml">
+            <block type="adminhtml/page_head" name="convert_root_head" as="head" template="page/head.phtml">
+                <action method="addJs"><script>prototype/prototype.js</script></action>
+                <action method="addJs"><script>prototype/validation.js</script></action>
+                <action method="addJs"><script>varien/js.js</script></action>
+                <action method="addJs"><script>mage/translate.js</script></action>
+                <action method="addJs"><script>mage/adminhtml/tools.js</script></action>
+            </block>
+            <block type="adminhtml/system_convert_profile_run" name="system_convert_profile_run" template="system/convert/profile/process.phtml" output="toHtml"/>
+        </block>
+    </adminhtml_stockeasy_catalog_product_stock_import>
+
+    <adminhtml_stockeasy_catalog_product_stock_scan>
+        <block type="adminhtml/template" name="root" output="toHtml" template="moogento/stockeasy/catalog/product/scan.phtml">
+            <block type="adminhtml/template" name="qty_log" template="moogento/stockeasy/catalog/product/qty_log.phtml" />
+        </block>
+    </adminhtml_stockeasy_catalog_product_stock_scan>
+
+    <adminhtml_stockeasy_catalog_product_stock_loadhistory>
+        <block type="adminhtml/template" name="root" output="toHtml" template="moogento/stockeasy/catalog/product/qty_log.phtml" />
+    </adminhtml_stockeasy_catalog_product_stock_loadhistory>
+
+    <adminhtml_catalog_product_stock_history>
+        <reference name="content">
+            <block type="moogento_stockeasy/adminhtml_catalog_product_stock_history" name="products_list">
+            </block>
+        </reference>
+    </adminhtml_catalog_product_stock_history>
+
+    <adminhtml_report_stockeasy_stockeasy>
+        <reference name="content">
+            <block type="moogento_stockeasy/adminhtml_report_stockeasy_qty" template="report/grid/container.phtml" name="stockeasy.report.grid.container">
+                <block type="moogento_stockeasy/adminhtml_report_stockeasy_form" name="grid.filter.form"></block>
+            </block>
+        </reference>
+    </adminhtml_report_stockeasy_stockeasy>
+    <adminhtml_report_stockeasy_history>
+        <reference name="content">
+            <block type="moogento_stockeasy/adminhtml_report_history_qty" template="report/grid/container.phtml" name="stockeasy.report.grid.container">
+                <block type="moogento_stockeasy/adminhtml_report_history_form" name="grid.filter.form"></block>
+            </block>
+        </reference>
+    </adminhtml_report_stockeasy_history>
+    <adminhtml_sales_order_index>
+        <update handle="order_grid_handle" />
+        <reference name="head">
+            <action method="addJs"><script>moogento/general/jquery.min.js</script></action>
+            <action method="addJs"><script>moogento/general/jquery-ui.min.js</script></action>
+            <action method="addJs"><script>moogento/general/jquery.ddslick.js</script></action>
+            <!-- add css vs js for config section here -->
+            <action  method="addCss"><name>moogento/general/config.css</name></action>
+        </reference>
+    </adminhtml_sales_order_index>
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <!-- add css vs js for config section here -->
+            <action  method="addCss"><name>moogento/general/config.css</name></action>
+		</reference>    
+    </adminhtml_system_config_edit>
+	<handle_add_css_js>
+		<reference name="head">
+            <action method="addJs"><script>moogento/jscolor/jscolor.js</script></action>
+		</reference>
+	</handle_add_css_js>
+</layout>

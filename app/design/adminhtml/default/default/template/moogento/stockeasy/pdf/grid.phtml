@@ -1,0 +1,39 @@
+<?php
+$numColumns = sizeof($this->getColumns());
+?>
+<?php if ($this->getCollection()): ?>
+    <table cellspacing="0">
+        <thead>
+                <tr>
+                    <?php foreach ($this->getColumns() as $_column): ?>
+                        <th><?php echo $_column->getHeaderHtml() ?></th>
+                    <?php endforeach; ?>
+                </tr>
+            </thead>
+        <tbody>
+        <?php if (($this->getCollection()->getSize() > 0) && (!$this->getIsCollapsed())): ?>
+            <?php foreach ($this->getCollection() as $_index => $_product): ?>
+                <?php $_item = $this->_getProduct($_product->getId()); ?>
+                <tr>
+                    <?php
+                    foreach ($this->getColumns() as $_column): ?>
+                        <?php if ($this->shouldRenderCell($_item, $_column)): ?>
+                            <?php $_rowspan = $this->getRowspan($_item, $_column); ?>
+                            <td <?php echo($_rowspan ? 'rowspan="' . $_rowspan . '" ' : '') ?>><?php echo(($_html = $_column->getRowField($_item)) != '' ? $_html : '&nbsp;') ?></td>
+                            <?php if ($this->shouldRenderEmptyCell($_item, $_column)): ?>
+                                <td colspan="<?php echo $this->getEmptyCellColspan($_item) ?>"><?php echo $this->getEmptyCellLabel() ?></td>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                    <?php endforeach; ?>
+                </tr>
+                <?php unset($_item); ?>
+            <?php endforeach; ?>
+        <?php elseif ($this->getEmptyText()): ?>
+            <tr>
+                <td colspan="<?php echo $numColumns ?>"><?php echo $this->getEmptyText() ?></td>
+            </tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
+<?php endif ?>

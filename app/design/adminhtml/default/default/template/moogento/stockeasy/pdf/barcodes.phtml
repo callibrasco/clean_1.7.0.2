@@ -1,0 +1,27 @@
+<table style="width: 100%; text-align: center; font-size: 25px" cellspacing="10">
+    <?php for ($i = 0; $i <= 9; $i++): ?>
+        <tr>
+            <td>
+                <?php if ($i != 0): ?>
+                    <?php echo $i * 100; ?><br />
+                    <barcode code="<?php echo Moogento_StockEasy_Helper_Data::SCAN_COMMAND . ($i * 100); ?>" type="C128A" />
+                <?php else: ?>
+                    <?php echo $this->__('Scan finished') ?>
+                    <br />
+                    <barcode code="<?php echo Moogento_StockEasy_Helper_Data::SCAN_COMMAND . 'STOP'; ?>" type="C128A" />
+                <?php endif; ?>
+            </td>
+            <td>
+                <?php if ($i != 0): ?>
+                    <?php echo $i * 10 ?><br />
+                    <barcode code="<?php echo Moogento_StockEasy_Helper_Data::SCAN_COMMAND . ($i * 10); ?>" type="C128A" />
+                <?php endif; ?>
+            </td>
+            <td>
+                <?php echo $i ?><br />
+                <barcode code="<?php echo Moogento_StockEasy_Helper_Data::SCAN_COMMAND . $i; ?>" type="C128A" />
+            </td>
+        </tr>
+    <?php endfor; ?>
+</table>
+ 

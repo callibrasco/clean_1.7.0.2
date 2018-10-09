@@ -1,0 +1,6 @@
+<?php $this->_gatherData() ?>
+<div style="border: 10px solid #ffa500; float: right; width: 300px; padding: 10px 50px;">
+    <?php foreach ($this->_totals as $total): ?>
+        <?php echo $total['label'] ?>: <?php echo $total['value'] ?><br/>
+    <?php endforeach; ?>
+</div>

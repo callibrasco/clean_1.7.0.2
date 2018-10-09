@@ -1,0 +1,16 @@
+<?php
+    $product = $this->getProduct();
+?>
+<div>
+    <?php if ($product->hasImage() && $product->getImage() != 'no_selection'): ?>
+        <?php echo $this->_echoImg($product); ?>
+    <?php else: ?>
+        <?php $parentIds = Mage::getResourceSingleton('catalog/product_type_configurable')->getParentIdsByChild($this->getProduct()->getId()); ?>
+        <?php if ($parentIds): ?>
+            <?php 
+                $parent_id = $parentIds[0];
+                echo $this->_echoImg(Mage::getModel('catalog/product')->load($parent_id)); 
+            ?>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>

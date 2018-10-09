@@ -1,0 +1,48 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @package    Billpay
+ * @author 	   Jan Wehrs <jan.wehrs@billpay.de>
+ * @copyright  Copyright (c) 2009 Billpay GmbH
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @var $this Billpay_Block_Info
+ */
+?>
+<?php
+echo $this->prepareTextForPdf(sprintf(
+    $this->__('Thank you for choosing BillPay Invoice Payment. Please transfer the order amount %s by using the reference (%s) to the following bank account:'),
+    $this->getOrder()->getBillpayInvoiceDuedate()
+        ? sprintf($this->__('before %s'), $this->formatDate($this->getOrder()->getBillpayInvoiceDuedate()))
+        : $this->__('before the day of payment'),
+    $this->getOrder()->getBillpayInvoiceReference()
+));
+?>
+    {{pdf_row_separator}}
+    ---
+    {{pdf_row_separator}}
+<?php echo $this->__('account holder') ?>:  <?php echo $this->getInfo()->getOrder()->getBillpayAccountHolder() ?>
+    {{pdf_row_separator}}
+<?php echo $this->__('bank name') ?>:  <?php echo $this->getInfo()->getOrder()->getBillpayBankName() ?>
+    {{pdf_row_separator}}
+<?php echo $this->__('bic') ?>:  <?php echo $this->getInfo()->getOrder()->getBillpayBankCode() ?>
+    {{pdf_row_separator}}
+<?php echo $this->__('iban') ?>:  <?php echo $this->getInfo()->getOrder()->getBillpayAccountNumber() ?>
+    {{pdf_row_separator}}
+<?php echo $this->__('reference') ?>:  <?php echo $this->getInfo()->getOrder()->getBillpayInvoiceReference() ?>
+<?php if ($this->getInfo()->getOrder()->getBillpayInvoiceDuedate()): ?>
+    {{pdf_row_separator}}
+    <?php echo $this->__('invoice due date') ?>:  <?php echo $this->formatDate($this->getInfo()->getOrder()->getBillpayInvoiceDuedate()) ?>
+<?php endif; ?>

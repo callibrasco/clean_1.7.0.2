@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @package Amasty_Customerimg
+ */
+-->
+<layout version="0.1.0">
+    <adminhtml_amcustomerimg_image_index>
+       <reference name="head"> 
+            <action method="addJs"><stylesheet>amasty/plugin/jquery.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugin/fancybox/jquery.fancybox.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/amcustomerimg/adminhtml.js</stylesheet></action>
+            <action method="addCss"><stylesheet>css/amasty/plugin/fancybox/jquery.fancybox.css</stylesheet></action>
+         </reference>
+    </adminhtml_amcustomerimg_image_index>
+</layout>

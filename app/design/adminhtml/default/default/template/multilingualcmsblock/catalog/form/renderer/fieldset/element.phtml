@@ -1,0 +1,67 @@
+<?php
+/**
+ * @see Mage_Adminhtml_Block_Catalog_Form_Renderer_Fieldset_Element
+ */
+?>
+<?php $_element = $this->getElement() ?>
+<?php $this->checkFieldDisable() ?>
+<?php
+    $elementToggleCode = $_element->getToggleCode() ? $_element->getToggleCode()
+        : 'toggleValueElements(this, this.parentNode.parentNode)';
+?>
+
+<?php if ($_element->getType()=='hidden'): ?>
+<tr>
+    <td class="hidden" colspan="100"><?php echo trim($_element->getElementHtml()) ?></td>
+</tr>
+<?php else: ?>
+<tr>
+    <td class="label"><?php echo trim($this->getElementLabelHtml()) ?></td>
+    <td class="value">
+		
+		<?php $_element = $this->getElement() ?>
+		<?php 
+			if($_element->getName()=='general[landing_page]'){
+				$store=Mage::app()->getRequest()->getParam('store');
+				$ids=array($store,0);
+		
+				$tableStore = Mage::getSingleton("core/resource")->getTableName("cms_block_store");
+				
+				$collection = Mage::getModel('cms/block')->getCollection();
+				$collection->getSelect()
+				->join(array("store"=>$tableStore),"main_table.block_id=store.block_id",array('main_table.identifier'))->group("main_table.block_id");
+				$collection->setOrder("store.store_id",'desc');
+				$collection->addFieldToFilter("store.store_id",array("in"=>$ids));
+				
+				foreach($collection as $block){
+					$id[$block["block_id"]]=$block["identifier"];
+				}
+				$idntuniq=array_unique($id);
+				$bid=array_keys($idntuniq);
+				$len=sizeOf($bid);
+				$titles=array();
+				$titles[]="Please select Static Block ...";
+				for($i=0;$i<$len;$i++){
+				
+					$model=Mage::getModel("cms/block")->load($bid[$i]);
+					$titles[$bid[$i]]=$model->getTitle();
+				}
+				$_element->setValues(array_unique($titles));
+				
+			}
+		?>
+		
+        <?php    echo trim($this->getElementHtml()) ?>
+        <?php if ($_element->getNote()) : ?>
+            <p class="note"><?php echo $_element->getNote() ?></p>
+        <?php endif; ?>
+    </td> 
+    <td class="scope-label"><span class="nobr"><?php echo $this->getScopeLabel() ?></span></td>
+    <?php if ($this->canDisplayUseDefault()): ?>
+    <td class="value use-default">
+        <input <?php if($_element->getReadonly()):?> disabled="disabled"<?php endif; ?> type="checkbox" name="use_default[]" id="<?php echo $_element->getHtmlId() ?>_default"<?php if ($this->usedDefault()): ?> checked="checked"<?php endif; ?> onclick="<?php echo $elementToggleCode; ?>" value="<?php echo $this->getAttributeCode() ?>"/>
+        <label for="<?php echo $_element->getHtmlId() ?>_default" class="normal"><?php echo $this->__('Use Default Value') ?></label>
+    </td>
+    <?php endif; ?>
+</tr>
+<?php endif; ?>

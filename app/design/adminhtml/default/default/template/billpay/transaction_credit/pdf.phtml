@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @package    Billpay
+ * @author 	   Jan Wehrs <jan.wehrs@billpay.de>
+ * @copyright  Copyright (c) 2009 Billpay GmbH
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @var $this Billpay_Block_Info_InfoRat
+ */
+?>
+<?php if(count($this->getDues()) == 0): ?>
+    <?php echo $this->__("billpay_order_cancelled")?>
+<?php else: ?>
+    <?php echo $this->prepareTextForPdf(html_entity_decode($this->__('Thank you for using BillPay Transaction Credit.'))) ?>
+    {{pdf_row_separator}}
+    <?php if ($this->getOrder()->getBillpayAccountNumber()): ?>
+        <?php echo $this->prepareTextForPdf(html_entity_decode($this->__('Please transfer the rates below to the following bank account before their date of payment.'))); ?>
+        <?php echo $this->prepareTextForPdf(html_entity_decode($this->__('Payments at the Post Office counter will incur additional charges. When making a payment via deposit slip, please transfer an additional 1.80 CHF.'))); ?>
+        {{pdf_row_separator}}
+        <?php echo html_entity_decode($this->__('payee')); ?>:
+        {{pdf_row_separator}}
+        BillPay GmbH
+        {{pdf_row_separator}}
+        Zweigniederlassung Schweiz (Regensdorf)
+        {{pdf_row_separator}}
+        DE-10115 Berlin
+        {{pdf_row_separator}}
+        ---
+        {{pdf_row_separator}}
+        <?php echo $this->__('IBAN') ?>: <?php echo $this->getOrder()->getBillpayAccountNumber(); ?>
+        {{pdf_row_separator}}
+        <?php echo $this->__('BIC'); ?>: <?php echo $this->getOrder()->getBillpayBankCode(); ?>
+        {{pdf_row_separator}}
+        <?php echo $this->__('bank name'); ?>: <?php echo $this->getOrder()->getBillpayBankName(); ?>
+        {{pdf_row_separator}}
+        <?php echo $this->__('reference'); ?>: <?php echo $this->getOrder()->getBillpayInvoiceReference(); ?>
+        {{pdf_row_separator}}
+        ---
+    <?php else: ?>
+        <?php echo $this->prepareTextForPdf(html_entity_decode($this->__('The rates will be fetched from the bank account set in the checkout.'))); ?>
+    <?php endif; ?>
+    {{pdf_row_separator}}
+    <?php echo $this->prepareTextForPdf(html_entity_decode($this->__('In addition to the invoice you will shortly receive an instalment plan with detailed information on your instalment payments.'))); ?>
+    {{pdf_row_separator}}
+<?php endif; ?>

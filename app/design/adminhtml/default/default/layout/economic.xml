@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_adminhtml_economic_index>
+        <reference name="content">
+            <block type="economic/adminhtml_economic" name="economic" />
+        </reference>
+    </adminhtml_adminhtml_economic_index>
+</layout>

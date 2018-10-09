@@ -1,0 +1,39 @@
+<?xml version="1.0"?> 
+<layout>
+    <adminhtml_adyenpaymenterror_index>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>system/config</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="adyen_payment_error/adminhtml_container" name="adyen_payment_error" template="nineteen02/adyen_payment_error/container.phtml">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_adyenpaymenterror_index>
+    
+    <adminhtml_adyenpaymenterror_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="adyen_payment_error/adminhtml_grid" name="adyen_payment_error_grid"/>
+        </block>
+    </adminhtml_adyenpaymenterror_grid>
+    
+    <adminhtml_adyenpaymenterror_edit>
+        <update handle="editor"/>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>system/config</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="adyen_payment_error/adminhtml_edit" name="adyen_payment_error_edit"></block>
+        </reference>
+        <reference name="left">
+            <!-- block type="adminhtml/store_switcher" name="store_switcher" before="-" / -->
+            <block type="adyen_payment_error/adminhtml_edit_tabs" name="adyen_payment_error_tabs" />
+        </reference>
+    </adminhtml_adyenpaymenterror_edit>
+</layout>

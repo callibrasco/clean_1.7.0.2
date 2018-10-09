@@ -1,0 +1,63 @@
+<?php
+$selectedStore = Mage::app()->getRequest()->getParam('store', false);
+$productListUrl = Mage::helper('adminhtml')->getUrl('adminhtml/catalog_product/index', array('store' => $selectedStore));
+?>
+<div class="content-header">
+    <h3 class="icon-head head-adminhtml-import"><?php echo $this->__('Product Meta Import') ?></h3>
+    <p class="form-buttons">
+        <button id="back_button" title="<?php echo $this->__('Back') ?>" type="button" class="scalable back" onclick="setLocation('<?php echo $productListUrl ?>');" style="">
+            <span><span><span><?php echo $this->__('Back') ?></span></span></span>
+        </button>
+        <button id="upload_button" title="<?php echo $this->__('Import') ?>" type="button" class="scalable save" onclick="editForm.submit();" style="">
+            <span><span><span><?php echo $this->__('Import') ?></span></span></span>
+        </button>
+    </p>
+</div> 
+<div class="entry-edit">
+    <form id="edit_form" action="<?php echo $this->getUrl('*/*/save') ?>" method="post" enctype="multipart/form-data">
+        <div>
+            <input name="form_key" type="hidden" value="<?php echo $this->getFormKey(); ?>">
+        </div>
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Product Meta Import') ?></h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset " id="base_fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                <tbody>
+                    <tr>
+                        <td class="label"><label for="store"><?php echo $this->__('Store') ?><span class="required">*</span></label></td>
+                        <td class="value">
+                            <select name="store" id="store">
+                                <option value="0"><?php echo $this->__('Default Product Values') ?></option>
+                                <?php foreach (Mage::app()->getWebsites() as $website) : ?>
+                                    <optgroup label="<?php echo $website->getName() ?>"></optgroup>
+                                    <?php foreach ($website->getGroups() as $group) : ?>
+                                        <optgroup label="<?php echo $group->getName() ?>">
+                                        <?php $stores = $group->getStores(); ?>
+                                        <?php foreach ($stores as $store) : ?>
+                                            <option value="<?php echo $store->getId() ?>" <?php echo ($selectedStore && $selectedStore == $store->getId()) ? 'selected="selected"' : '' ?>><?php echo $store->getName() ?></option>
+                                        <?php endforeach ?>
+                                        </optgroup>
+                                    <?php endforeach ?>
+                                <?php endforeach ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label for="import_file"><?php echo $this->__('Select File to Import') ?>&nbsp;<span class="required">*</span></label></td>
+                        <td class="value" style="padding-bottom:0 !important;">
+                            <input id="import_file" name="import_file" title="<?php echo $this->__('Select File to Import') ?>" type="file" class=" required-entry">
+                            <p class="note">.csv <?php echo $this->__('only') ?></p>
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+editForm = new varienForm('edit_form', '');
+</script>

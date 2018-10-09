@@ -1,0 +1,23 @@
+<?php if ('adminhtml_catalog_product_grid' == Mage::app()->getFrontController()->getAction()->getFullActionName()) : ?>
+<script type="text/javascript">
+console.log('<?php echo $this->_getTotalQty() ?>');
+jQuery('#moogentoStockEasyQtyTotal_totalQty').html('<?php echo $this->_getTotalQty() ?>');
+jQuery('#moogentoStockEasyQtyTotal_totalInventoryQty').html('<?php echo $this->_getTotalInventoryQty() ?>');
+console.log('<?php echo $this->_getTotalInventoryQty() ?>');
+</script>
+<?php else :  ?>
+<div id="moogentoStockEasyQtyTotal">
+    <p><?php echo $this->__('Visible ') . '<em id="moogentoStockEasyQtyTotal_totalQty">' . $this->_getTotalQty(); ?></em></p>
+    
+    <p><?php echo $this->__('All ') . '<em id="moogentoStockEasyQtyTotal_totalInventoryQty">' . $this->_getTotalInventoryQty()?></em></p>
+    <p class="StockEasyQtyTotal_title">Stock Qty</p>
+    <script type="text/javascript">
+        var updateQtyAjaxUrl = '<?php echo Mage::helper("adminhtml")->getUrl("*/stockeasy_catalog_product/updateQtyAjax"); ?>';
+    </script>
+    <style type="text/css">
+        .stInput {
+            width: 50% !important;
+        }
+    </style>
+</div>
+<?php endif; ?>

@@ -1,0 +1,13 @@
+<?php 
+$results_array = Mage::helper('moogento_stockeasy')->getValueSetStockOption("exact_stock_status_images_of_status");
+if (isset($results_array[$this->getOrder()->getExactStockStatus()])){
+    $result = $results_array[$this->getOrder()->getExactStockStatus()];
+    if(isset($result['img'])){
+        echo ('<img src="'.$result['img'].'" title="'.$result['label'].'" width="16" height="16" />');
+    } else {
+        echo $result['label'];
+    }
+} else {
+    echo '';
+}
+?>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+    <adminhtml_importmeta_import>
+        <reference name="head">
+            <action method="setTitle"><title>Product Meta Import</title></action>
+        </reference>
+        <reference name="content">
+            <block type="nineteen02_importmeta/adminhtml_importmeta" name="import_form" template="nineteen02/meta/form.phtml" />
+        </reference>
+    </adminhtml_importmeta_import>
+</layout>

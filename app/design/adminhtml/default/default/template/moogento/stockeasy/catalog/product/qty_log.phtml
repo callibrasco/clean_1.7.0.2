@@ -1,0 +1,69 @@
+<?php $helper = Mage::helper('moogento_stockeasy'); ?>
+<div id="qty-log" class="panel panel-default" style="height: auto !important;">
+    <div class="panel-heading">
+        <?php echo $this->__('History') ?>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    <?php echo $this->__('Date') ?>
+                </th>
+                <th>
+                    <?php //echo $this->__('Image') ?>
+                </th>
+                <th>
+                    <?php echo $this->__('Sku') ?>
+                </th>
+                <th>
+                    <?php echo $this->__('Previous Qty') ?>
+                </th>
+                <th>
+                    <?php echo $this->__('Qty change') ?>
+                </th>
+                <th>
+                    <?php echo $this->__('New Qty') ?>
+                </th>
+                <th>
+                    <?php echo $this->__('User ID') ?>
+                </th>
+                <th>
+                    <?php echo $this->__('Action') ?>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach (Mage::helper('moogento_stockeasy')->getScanQtyLog() as $logItem): ?>
+                <tr>
+                    <td>
+                        <?php echo date('d.m.Y H:i', strtotime($logItem->getDate())) ?>
+                    </td>
+                    <td>
+                        <img style="max-width: 50px;" src="<?php echo $helper->getProductImageBySku($logItem->getSku()) ?>" />
+                    </td>
+                    <td>
+                        <?php echo $logItem->getSku() ?>
+                    </td>
+                    <td>
+                        <?php echo !is_null($logItem->getQtyBefore()) ? (int)$logItem->getQtyBefore() : '' ?>
+                    </td>
+                    <td>
+                        <?php echo ($logItem->getQty() > 0 ? '+' : '') . (int)$logItem->getQty() ?>
+                    </td>
+                    <td>
+                        <?php echo !is_null($logItem->getQtyBefore()) ? (int)$logItem->getQtyBefore() + (int)$logItem->getQty() : '' ?>
+                    </td>
+                    <td>
+                        <?php echo $logItem->getUserId() ?>
+                    </td>
+                    <td>
+                        <?php echo $logItem->getReason() ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+</div>

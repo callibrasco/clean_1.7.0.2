@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @package    Billpay
+ * @author 	   Jan Wehrs <jan.wehrs@billpay.de>
+ * @copyright  Copyright (c) 2009 Billpay GmbH
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/** @var Billpay_Block_Info $this */
+?>
+
+<?php echo $this->__('billpay_rec') ?>
+<br />
+<img src="https://www.billpay.de/sites/default/files/LogoMid1.png" title="Billpay" alt="Billpay logo">
+<?php if ($this->getOrder()):?>
+	<br /><br />
+	<?php
+	echo sprintf(
+		$this->__('Thank you for choosing BillPay Invoice Payment. Please transfer the order amount %s by using the reference (%s) to the following bank account:'),
+		$this->getOrder()->getBillpayInvoiceDuedate()
+			? sprintf($this->__('before %s'), $this->formatDate($this->getOrder()->getBillpayInvoiceDuedate()))
+			: $this->__('before the day of payment'),
+		$this->getOrder()->getBillpayInvoiceReference()
+	);
+	?>
+	<br /><br />
+	<table>
+		<tr>
+			<td style="width:160px"><?php echo $this->__('account holder') ?>:</td>
+			<td><?php echo $this->getOrder()->getBillpayAccountHolder() ?></td>
+		</tr>
+		<tr>
+			<td><?php echo $this->__('iban') ?>:</td>
+			<td><?php echo $this->getOrder()->getBillpayAccountNumber() ?></td>
+		</tr>
+		<tr>
+			<td><?php echo $this->__('bic') ?>:</td>
+			<td><?php echo $this->getOrder()->getBillpayBankCode() ?></td>
+		</tr>
+		<tr>
+			<td><?php echo $this->__('bank name') ?>:</td>
+			<td><?php echo $this->getOrder()->getBillpayBankName() ?></td>
+		</tr>
+		<tr>
+			<td><?php echo $this->__('reference') ?>:</td>
+			<td><?php echo $this->getOrder()->getBillpayInvoiceReference() ?></td>
+		</tr>
+		<?php if($this->getOrder()->getBillpayInvoiceDuedate()): ?>
+			<tr>
+				<td><?php echo $this->__('invoice due date') . ':' ?></td>
+				<td><?php echo $this->formatDate($this->getOrder()->getBillpayInvoiceDuedate()) ?></td>
+			</tr>
+		<?php endif; ?>
+	</table>
+<?php endif; ?>

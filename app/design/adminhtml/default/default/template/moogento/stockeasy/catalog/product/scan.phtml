@@ -1,0 +1,187 @@
+<?php $helper = Mage::helper('moogento_stockeasy'); ?>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Process Stock : Scan</title>
+
+    <!-- Bootstrap -->
+    <link href="<?php echo $this->getSkinUrl('moogento/general/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
+    <link href="<?php echo $this->getSkinUrl('moogento/general/bootstrap/css/bootstrap-switch.min.css') ?>" rel="stylesheet">
+    <link href="<?php echo $this->getSkinUrl('moogento/general/bootstrap/css/jquery.bootstrap-touchspin.min.css') ?>" rel="stylesheet">
+    <link href="<?php echo $this->getSkinUrl('moogento/general/spinner/spinner.css') ?>" rel="stylesheet">
+    <link href="<?php echo $this->getSkinUrl('moogento/stockeasy/scan.css') ?>" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <!--[endif]-->
+</head>
+<body>
+<?php $customAttributeCode = Mage::getStoreConfig('moogento_stockeasy/scan/additional_attribute'); ?>
+<div id="main" class="container lead">
+    <br/>
+    <form method="post" action="<?php echo $this->getUrl('*/*/*') ?>" data-bind="submit: save">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <?php echo $this->__('Process Stock : Scan') ?>
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-danger" data-bind="visible: error, text: error"></div>
+                <input type="hidden" value="<?php echo $this->getFormKey() ?>" name="form_key" />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="left product-image">
+                            <img data-bind="attr: {src: image}" />
+                        </div>
+                        <div class="right additional visible-xs-block">
+                            <div data-bind="visible: productLoaded">
+                                <span class="qty-current" data-bind="text: qtyCurrent"></span><br/>
+                                <span data-bind="visible: additionalAttributeLabel">
+                                    <span class="additional-attribute">
+                                        <span data-bind="text: additionalAttributeLabel"></span>:
+                                        <span data-bind="text: additionalAttribute"></span>
+                                    </span>
+                                </span><br/>
+                                <span class="sku"><?php echo $this->__('SKU') ?>: <span data-bind="text: sku"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div data-bind="visible: productLoaded" class="hidden-xs">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span class="qty-current" data-bind="text: qtyCurrent"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <?php if ($customAttributeCode): ?>
+                                    <span data-bind="visible: additionalAttributeLabel">
+                                        <span class="additional-attribute">
+                                            <span class="icon-location"></span>
+                                            <span data-bind="text: additionalAttribute"></span>
+                                        </span>
+                                    </span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="sku"><?php echo $this->__('SKU') ?>: <span data-bind="text: sku"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <input name="barcode" type="text" data-bind="hasFocus: barcodeFocus, value: barcodeScan, valueUpdate: 'keyup', event: {keypress: skanProduct}, attr: {placeholder: placeholder}" class="form-control scan-input" placeholder="">
+                        <br/>
+                        <?php if ($customAttributeCode): ?>
+                        <div class="editable-row" data-bind="visible: productLoaded">
+                            <div class="left checkbox-wrapper">
+                                <span class="checkbox">
+                                    <input id="edit-attribute" type="checkbox" data-bind="checked: editAttribute"/>
+                                    <label for="edit-attribute"><span></span></label>
+                                </span>
+                            </div>
+                            <div class="left content-wrapper">
+                                <div class="editable-label">
+                                    <span class="icon-location"></span>
+                                    <span data-bind="text: additionalAttribute"></span>
+                                </div>
+                                <div class="left" data-bind="visible: editAttribute">
+                                    <input name="qty" type="text" data-bind="value: additionalAttributeScan, hasFocus: additionalAttributeFocus, valueUpdate: 'keyup', event: {keypress: scanAttribute}" />
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br/>
+                        <?php endif; ?>
+                        <div class="editable-row" data-bind="visible: productLoaded">
+                            <div class="left checkbox-wrapper">
+                                <span class="checkbox">
+                                    <input id="edit-stock" type="checkbox" data-bind="checked: editStock"/>
+                                    <label for="edit-stock"><span></span></label>
+                                </span>
+                            </div>
+                            <div class="left content-wrapper">
+                                <div class="editable-label" data-bind="visible: editStock">
+                                    <span data-bind="text: qty"></span>
+                                </div>
+                                <div class="right qty-container" data-bind="visible: editStock">
+                                    <div class="input-group bootstrap-touchspin">
+                                        <span class="input-group-btn"><button type="button" class="btn btn-default bootstrap-touchspin-down" data-bind="click: decrementQty">-</button></span>
+                                        <input type="text" data-bind="value: qtyScan, hasFocus: qtyFocus, valueUpdate: 'keyup', event: {keypress: scanQty}" class="qty-scanned form-control" name="qty" style="display: block;">
+                                        <span class="input-group-btn"><button type="button" class="btn btn-default bootstrap-touchspin-up" data-bind="click: incrementQty">+</button></span>
+                                    </div>
+                                    <select name="action" data-bind="value: action">
+                                        <option value="add"><?php echo $this->__('Add to') ?></option>
+                                        <option value="remove"><?php echo $this->__('Remove from') ?></option>
+                                        <option value="set"><?php echo $this->__('Set as') ?></option>
+                                    </select>
+                                    <select name="reason" data-bind="value: reason">
+                                        <option value="Stock received"><?php echo $this->__('Stock received') ?></option>
+                                        <option value="Stock check"><?php echo $this->__('Stock check') ?></option>
+                                        <option value="other"><?php echo $this->__('Other') ?></option>
+                                    </select>
+                                    <input type="text" data-bind="visible: reason() == 'other', value: reason_other" name="reason_other">
+                                </div>
+                                <div data-bind="visible: !editStock()" class="text-center">
+                                    <span class="qty-current" data-bind="text: qtyCurrent"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right" data-bind="visible: editStock() || editAttribute()">
+
+                <!--<a data-bind="click:save" class="btn btn-success btn-large btn-lg"><?php //echo $this->__('Save') ?></a>-->
+                <!--<button type="submit" class="btn btn-success btn-large btn-lg"><?php //echo $this->__('Save') ?></button>-->
+            </div>
+        </div>
+    </form>
+
+    <?php echo $this->getChildHtml('qty_log') ?>
+</div>
+<script src="<?php echo $this->getSkinUrl('moogento/general/js/jquery-2.1.1.js') ?>"></script>
+<script src="<?php echo $this->getSkinUrl('moogento/general/knockout-3.1.0.js') ?>"></script>
+<script src="<?php echo $this->getSkinUrl('moogento/general/bootstrap/js/bootstrap.min.js') ?>"></script>
+<script src="<?php echo $this->getSkinUrl('moogento/general/bootstrap/js/bootstrap-switch.min.js') ?>"></script>
+<script src="<?php echo $this->getSkinUrl('moogento/general/bootstrap/js/jquery.bootstrap-touchspin.min.js') ?>"></script>
+<script src="<?php echo Mage::getBaseUrl('js') . 'moogento/general/spinner.js'; ?>"></script>
+
+<script src="<?php echo $this->getSkinUrl('moogento/stockeasy/scan.js') ?>"></script>
+
+<script>
+    var FORM_KEY = '<?php  echo $this->getFormKey() ?>';
+    ProductScanModule.messages = {
+        placeholder: '<?php echo $this->__('Click before scan...') ?>',
+        errorNoBarcode: '<?php echo $this->__('Please scan product first') ?>'
+    };
+    ProductScanModule.root = new ProductScanModule.Scan();
+    ProductScanModule.root.scanMark = '<?php echo Moogento_StockEasy_Helper_Data::SCAN_COMMAND ?>';
+    ProductScanModule.root.ajaxProductUrl = '<?php echo $this->getUrl('*/*/getProduct') ?>';
+    ProductScanModule.root.saveUrl = '<?php echo $this->getUrl('*/*/saveScan') ?>';
+    ProductScanModule.root.loadHistoryUrl = '<?php echo $this->getUrl('*/*/loadHistory') ?>';
+    <?php if (Mage::registry('error')): ?>
+    ProductScanModule.root.error('<?php echo Mage::registry('error') ?>');
+    <?php endif; ?>
+    <?php if (Mage::registry('barcode')): ?>
+    ProductScanModule.root.barcode('<?php echo Mage::registry('barcode') ?>');
+    ProductScanModule.root.image('<?php echo Mage::helper('moogento_stockeasy')->getProductImage(Mage::getModel('catalog/product')->loadByAttribute(
+                Mage::getStoreConfig('moogento_stockeasy/scan/barcode'), Mage::registry('barcode')
+            )) ?>');
+    <?php else: ?>
+    ProductScanModule.root.image('<?php echo $this->getSkinUrl('moogento/general/images/default_image.png') ?>');
+    <?php endif; ?>
+    ProductScanModule.root.defaultImage = '<?php echo $this->getSkinUrl('moogento/general/images/default_image.png') ?>';
+    <?php if (Mage::registry('qty')): ?>
+    ProductScanModule.root.qty('<?php echo Mage::registry('qty') ?>');
+    <?php endif; ?>
+    <?php if (Mage::registry('action')): ?>
+    ProductScanModule.root.action('<?php echo Mage::registry('action') ?>');
+    <?php endif; ?>
+    ko.applyBindings(ProductScanModule.root);
+</script>
+</body>
+</html>
+ 

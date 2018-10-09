@@ -711,6 +711,7 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
             $product = $this->_initProductSave();
 
             try {
+                Mage::register('ev', true);
                 $product->save();
                 $productId = $product->getId();
 
